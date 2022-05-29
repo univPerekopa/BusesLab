@@ -1,0 +1,122 @@
+﻿@model IEnumerable<BusesWebApplication.Timetable>
+
+@{
+    ViewData["Title"] = "Розклад";
+}
+<h1>Розклад</h1>
+
+<p>
+    <a asp-action="Create">Додати рейс до розкладу</a>
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>Заплановані</th>
+            <th>В процесі</th>
+            <th>Виконані</th>
+            <th>Скасовані</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Html.CheckBox("includePlanned", true)</td>
+            <td>@Html.CheckBox("includeInProgress", true)</td>
+            <td>@Html.CheckBox("includeFinished", true)</td>
+            <td>@Html.CheckBox("includeCancelled", true)</td>
+        </tr>
+    </tbody>
+</table>
+<br />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ExpectedDeparture)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActualDeparture)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExpectedArrival)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActualArrival)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Driver)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Route)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TripStatus)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var item in Model.OrderBy(item => item.ExpectedDeparture))
+            {
+                <tr class="tripid_@item.TripStatusId">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ExpectedDeparture)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ActualDeparture)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ExpectedArrival)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ActualArrival)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Bus.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Driver.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Route.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TripStatus.Name)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Редагувати</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Інформація</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Видалити</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@section scripts {
+
+<script type="text/javascript">
+
+    $(document).ready(function(){
+
+        $("#includePlanned").change(function () {
+            $('.tripid_1').toggle();
+        })
+        $("#includeInProgress").change(function () {
+            $('.tripid_2').toggle();
+        })
+        $("#includeFinished").change(function () {
+            $('.tripid_3').toggle();
+        })
+        $("#includeCancelled").change(function () {
+            $('.tripid_4').toggle();
+        })
+    });
+
+</script>
+
+}

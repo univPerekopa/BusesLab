@@ -1,0 +1,55 @@
+﻿@model IEnumerable<BusesWebApplication.Country>
+
+@{
+    ViewData["Title"] = "Країни";
+}
+
+<h1>Країни</h1>
+
+<p>
+    <a asp-action="Create">Додати країну</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Редагувати</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Деталі</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Видалили</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<div>
+    <h3>Оберіть excel-файл для заватаження</h3>
+    @using (Html.BeginForm("Import", "Countries", FormMethod.Post, new { enctype = "multipart/form-data", id = "frm-excel" }))
+    {
+        <div>
+            Завантажте Excel-файл:
+            <input type="file" name="fileExcel" id="fileExcel" accept=".xlsx" />
+            <div>
+                <input type="submit" value="Завантажити" />
+            </div>
+        </div>
+    }
+    <div asp-validation-summary="All" class="text-danger"></div>
+</div>
+
+<div>
+    <h3>Завантаження інформації в файл</h3>
+    <a asp-action="Export">Завантажити</a>
+</div>

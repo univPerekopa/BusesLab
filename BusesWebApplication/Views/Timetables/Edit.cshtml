@@ -1,0 +1,66 @@
+﻿@model BusesWebApplication.Timetable
+
+@{
+    ViewData["Title"] = "Редагування";
+}
+
+<h1>Редагування рейсу</h1>
+
+<h4>Рейс</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="RouteId" class="control-label"></label>
+                <select asp-for="RouteId" class="form-control" asp-items="ViewBag.RouteId"></select>
+                <span asp-validation-for="RouteId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DriverId" class="control-label"></label>
+                <select asp-for="DriverId" class="form-control" asp-items="ViewBag.DriverId"></select>
+                <span asp-validation-for="DriverId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BusId" class="control-label"></label>
+                <select asp-for="BusId" class="form-control" asp-items="ViewBag.BusId"></select>
+                <span asp-validation-for="BusId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="ExpectedDeparture" class="form-control" type="hidden" />
+                <span asp-validation-for="ExpectedDeparture" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ActualDeparture" class="control-label"></label>
+                <input asp-for="ActualDeparture" class="form-control" />
+                <span asp-validation-for="ActualDeparture" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="ExpectedArrival" class="form-control" type="hidden" />
+                <span asp-validation-for="ExpectedArrival" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ActualArrival" class="control-label"></label>
+                <input asp-for="ActualArrival" class="form-control" />
+                <span asp-validation-for="ActualArrival" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="TripStatusId" class="form-control" type="hidden" />
+                <span asp-validation-for="TripStatusId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Зберегти" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,175 @@
+﻿@{
+	ViewData["Title"] = "Запити";
+}
+<table>
+    <tr>
+        <td width="700px" align="left">
+            <input id="input1" type="number" onchange=setResp1() value="1" min="0" max="1000000000000" />
+            <p id="resp1"></p>
+
+            <br />
+            <br />
+
+            <select id="input2" onchange=setResp2() asp-items="ViewBag.Stations"></select>
+            <p id="resp2"></p>
+
+            <br />
+            <br />
+
+            <select id="input3" onchange=setResp3() asp-items="ViewBag.Buses"></select>
+            <p id="resp3"></p>
+
+            <br />
+            <br />
+
+            <select id="input4" onchange=setResp4() asp-items="ViewBag.Statuses"></select>
+            <p id="resp4"></p>
+
+            <br />
+            <br />
+
+            <input id="input5" type="number" onchange=setResp5() value="1" min="0" max="1000000000000" />
+            <p id="resp5"></p>
+        </td>
+        <td width="1000px" align="left">
+            <select id="input_s1" onchange=setRespS1() asp-items="ViewBag.Stations"></select>
+            <p id="resp_s1"></p>
+
+            <br />
+            <br />
+
+            <select id="input_s2" onchange=setRespS2() asp-items="ViewBag.Drivers"></select>
+            <p id="resp_s2"></p>
+
+            <br />
+            <br />
+
+            <select id="input_s3" onchange=setRespS3() asp-items="ViewBag.BusStatuses"></select>
+            <p id="resp_s3"></p>
+        </td>
+    </tr>
+</table>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        function setResp1() {
+            let val = document.getElementById("input1").value;
+            fetch('api/simplequery/1/' + val.toString())
+              .then((response) => {
+                return response.json();
+              })
+              .then((data) => {
+                document.getElementById("resp1").innerText = "Країни, де >= " + val.toString() + " станцій: " + data.join(', ');
+              });
+        }
+
+        function setResp2() {
+            let select = document.getElementById("input2");
+            let val = select.value;
+            var text = select.options[select.selectedIndex].text;
+
+            fetch('api/simplequery/2/' + val.toString())
+              .then((response) => {
+                return response.json();
+              })
+              .then((data) => {
+                document.getElementById("resp2").innerText = "Маршрути, які проходять через " + text + ": " + data.join(', ');
+              });
+        }
+
+        function setResp3() {
+            let select = document.getElementById("input3");
+            let val = select.value;
+            var text = select.options[select.selectedIndex].text;
+
+            fetch('api/simplequery/3/' + val.toString())
+              .then((response) => {
+                return response.json();
+              })
+              .then((data) => {
+                document.getElementById("resp3").innerText = "Водії, які можуть керувати автобусом " + text + ": " + data.join(', ');
+              });
+        }
+
+        function setResp4() {
+            let select = document.getElementById("input4");
+            let val = select.value;
+            var text = select.options[select.selectedIndex].text;
+
+            fetch('api/simplequery/4/' + val.toString())
+              .then((response) => {
+                return response.json();
+              })
+              .then((data) => {
+                document.getElementById("resp4").innerText = "Водії, для яких у розкладі є рейси зі статусом " + text + ": " + data.join(', ');
+              });
+        }
+
+        function setResp5() {
+            let val = document.getElementById("input5").value;
+            fetch('api/simplequery/5/' + val.toString())
+              .then((response) => {
+                return response.json();
+              })
+              .then((data) => {
+                document.getElementById("resp5").innerText = "Країни, де рівно " + val.toString() + " міст: " + data.join(', ');
+              });
+        }
+
+        function setRespS1() {
+            let select = document.getElementById("input_s1");
+            let val = select.value;
+            var text = select.options[select.selectedIndex].text;
+            fetch('api/setsquery/1/' + val.toString())
+              .then((response) => {
+                return response.json();
+              })
+              .then((data) => {
+                document.getElementById("resp_s1").innerText = "Маршрути, які проходять через всі станції окрім, можливо, " + text.toString() 
+                    + ": " + data.join(', ');
+              });
+        }
+
+        function setRespS2() {
+            let select = document.getElementById("input_s2");
+            let val = select.value;
+            var text = select.options[select.selectedIndex].text;
+            fetch('api/setsquery/2/' + val.toString())
+              .then((response) => {
+                return response.json();
+              })
+              .then((data) => {
+                document.getElementById("resp_s2").innerText = "Водії, які мають всі ті категорії що й " + text.toString() 
+                    + ": " + data.join(', ');
+              });
+        }
+
+        function setRespS3() {
+            let select = document.getElementById("input_s3");
+            let val = select.value;
+            var text = select.options[select.selectedIndex].text;
+            fetch('api/setsquery/3/' + val.toString())
+              .then((response) => {
+                return response.json();
+              })
+              .then((data) => {
+                document.getElementById("resp_s3").innerText = "Водії, які можуть керуваті всіма автобусами зі статусом " + text.toString() 
+                    + ": " + data.join(', ');
+              });
+        }
+
+        $(document).ready(function(){
+            setResp1();
+            setResp2();
+            setResp3();
+            setResp4();
+            setResp5();
+
+            setRespS1();
+            setRespS2();
+            setRespS3();
+        })
+    </script>
+}
